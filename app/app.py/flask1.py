@@ -31,12 +31,12 @@ db = SQLAlchemy(app)
 class Medicine(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
-    # Add other relevant columns for medicine details
+    
 
 class InsuranceProvider(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
-    # Add other relevant columns for insurance provider details
+    
 
 # Create a route for the index page
 @app.route('/')
