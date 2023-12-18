@@ -1,5 +1,5 @@
 # Web Service
-* The idea for this webs service is a site/form where you are able to select from a drop-down menu, your insurance provider and a medicine, and upon submission, it displays information about the medicine and insurance; if the medicine is covered by the chosen insurance provider and how much the medicine will cost.
+* The idea for this web service is that its a site/form where you are able to select from a drop-down menu, your insurance provider and a medicine, and upon submission, it displays information about the medicine and insurance; if the medicine is covered by the chosen insurance provider and how much the medicine will cost.
 * Fufill data requirement option 2: Involve the use of fake data that you create and store in a database and use in your product and then displays data.
 
 # Technologies Used
