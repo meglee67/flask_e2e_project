@@ -4,17 +4,17 @@
 
 # Technologies Used
 * I attempted to go for the 110 points so, I attempted to fufill all the web service requirements, using:
-    * Github - For version control
-    * .env - environment variables
-    * Flask - backend
-    * Tailwind - frontend styling
-    * MySQL GCP Database 
-    * SQLAlchemy - ORM
-    * API - the created API in the api folder within app defines an endpoint that retrieves coverage information for a specified medicine and insurance provider from a database. It cuts out alot of the SQLAlchemy and jsonify, so I decided to put it into its own section to show that I had done it but still wanting to fufill the other webservice requirements (SQLAlchemy, etc.)
-    * Google OAuth - Used to authenticate and login to my platform
-    * Sentry.io - used to track errors and log; I would get error emails everytime something went wrong
-    * Docker - used to containerize the Flask application
-    * Azure Cloud Deployment - I initally tried to use GCP to deploy, but after many attempts I was unsuccessful. I then switched to Azure and got a successful deployment
+    * **Github** - For version control
+    * **.env** - environment variables
+    * **Flask** - backend
+    * **Tailwind** - frontend styling
+    * **MySQL GCP Database** 
+    * **SQLAlchemy** - ORM
+    * **API** - the created API in the api folder within app defines an endpoint that retrieves coverage information for a specified medicine and insurance provider from a database. It cuts out alot of the SQLAlchemy and jsonify, so I decided to put it into its own section to show that I had done it but still wanting to fufill the other webservice requirements (SQLAlchemy, etc.)
+    * **Google OAuth** - Used to authenticate and login to my platform
+    * **Sentry.io** - used to track errors and log; I would get error emails everytime something went wrong
+    * **Docker** - used to containerize the Flask application
+    * **Azure Cloud Deployment** - I initally tried to use GCP to deploy, but after many attempts I was unsuccessful. I then switched to Azure and got a successful deployment
 
 # Steps to Run Web Service
 
@@ -48,3 +48,32 @@
 * FLASK_SECRET_KEY=create_any_password_here
 * GOOGLE_CLIENT_ID=find_in_gcp_for_OAuth
 * GOOGLE_CLIENT_SECRET=find_in_gcp_for_OAuth
+
+# Screenshots
+
+Here are screenshots from my Azure Cloud deployment; the dashboard and the deployment center
+* ![image](https://github.com/meglee67/flask_e2e_project/assets/123908362/70c372cd-03bb-419c-9a13-1987f70a0dae)
+* ![image](https://github.com/meglee67/flask_e2e_project/assets/123908362/00e42b17-49dd-4579-a36e-c07978e3954c)
+
+Here is an image of my Sentry.io dashboard
+* ![image](https://github.com/meglee67/flask_e2e_project/assets/123908362/68513136-6a81-4149-8207-471624d744f3)
+
+Here are screenshots of my flask app
+* ![image](https://github.com/meglee67/flask_e2e_project/assets/123908362/3852a3fe-c3c1-4d75-8108-f47eb84a68d2)
+* ![image](https://github.com/meglee67/flask_e2e_project/assets/123908362/510ecad7-2a10-44d4-b4ba-f0b81f13223d)
+* ![image](https://github.com/meglee67/flask_e2e_project/assets/123908362/eb75286a-9e7d-4c4c-9de2-ba71c7670d6b)
+* ![image](https://github.com/meglee67/flask_e2e_project/assets/123908362/09db6995-7531-446f-9f9e-6f9da8aee964)
+
+Here are screenshots of my SQL database
+* ![image](https://github.com/meglee67/flask_e2e_project/assets/123908362/512d73d5-6e5e-41e8-9a9a-77387e33f906)
+* ![image](https://github.com/meglee67/flask_e2e_project/assets/123908362/7a8fe0fb-3581-4580-bd6b-49c8f640878d)
+* ![image](https://github.com/meglee67/flask_e2e_project/assets/123908362/96f10b62-a758-495d-adaf-d09eed61e683)
+
+
+
+
+
+
+
+
+
