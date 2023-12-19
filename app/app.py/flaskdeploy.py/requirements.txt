@@ -1,9 +1,0 @@
-Flask==2.3.3
-requests==2.31.0
-debugpy # Required for debugging.
-flask_sqlalchemy==3.0.1
-sqlalchemy==1.4.25
-dotenv==0.19.1
-sentry-sdk==1.4.3
-authlib==0.15.5
-requests==2.26.0
