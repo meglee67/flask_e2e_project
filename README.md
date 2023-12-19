@@ -5,7 +5,7 @@
 
 <br>
 
-* the ``README.md`` file within the docs folder contains the details about this project
+* the [README.md](https://github.com/meglee67/flask_e2e_project/blob/003024b647f0fc549e4b05829c4c6d6e37e69af1/docs/README.md) file within the docs folder contains the details about this project
 
 <br>
 
