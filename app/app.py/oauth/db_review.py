@@ -4,7 +4,7 @@ import sqlite3
 import pandas as pd
 
 # Initialize the database
-DATABASE = 'WK7/google_flask_app/users.db'
+DATABASE = 'oauth/users.db'
 
 # search for user in database
 db = sqlite3.connect(DATABASE)
