@@ -1,3 +1,4 @@
+# this is a copy of table_creation.py found within the data folder. I had to make a copy and move it out here because my references weren't working and detecting the file in the other folder
 from sqlalchemy import create_engine, Column, Integer, String, Boolean, Float, ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.declarative import declarative_base
