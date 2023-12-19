@@ -1,31 +1,94 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <!-- Include Tailwind CSS -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles.css') }}">
+    <title>Flask app</title>
+    <style>
+        /* Style for the tabs */
+        .tab-content {
+            display: none;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-top: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Style for login button */
+        .login-btn {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #fff;
+            background-color: #4285f4;
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+    </style>
 </head>
+
 <body>
     <div class="container mx-auto my-8">
-        <h1 class="text-3xl font-semibold mb-4">Medicine and Insurance Provider Selection</h1>
-        <form id="medicineForm" class="flex gap-4">
-            <select id="insuranceProvider" class="p-2 border rounded">
-                <!-- Populate insurance providers dynamically -->
-                <option value="">Select Insurance Provider</option>
-                <!-- Options loaded via JavaScript -->
-            </select>
-            <select id="medicine" class="p-2 border rounded">
-                <!-- Populate medicines dynamically -->
-                <option value="">Select Medicine</option>
-                <!-- Options loaded via JavaScript -->
-            </select>
-            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Get Info</button>
-        </form>
-        <div id="result" class="mt-8">
-            <!-- Display fetched info here -->
+        <!-- Tabs section -->
+        <div class="flex justify-center gap-4">
+            <button class="tab-btn active" onclick="openTab(event, 'medicine-tab')">Medicine & Providers</button>
+            <button class="tab-btn" onclick="openTab(event, 'login-tab')">Login with Google</button>
+        </div>
+
+        <!-- Medicine & Providers Tab -->
+        <div id="medicine-tab" class="tab-content active">
+            <h1 class="text-3xl font-semibold mb-4">Medicine and Insurance Provider Selection</h1>
+            <form id="medicineForm" class="flex gap-4">
+                <select id="insuranceProvider" class="p-2 border rounded">
+                    <!-- Populate insurance providers dynamically -->
+                    <option value="">Select Insurance Provider</option>
+                    <!-- Options loaded via JavaScript -->
+                </select>
+                <select id="medicine" class="p-2 border rounded">
+                    <!-- Populate medicines dynamically -->
+                    <option value="">Select Medicine</option>
+                    <!-- Options loaded via JavaScript -->
+                </select>
+                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Get Info</button>
+            </form>
+            <div id="result" class="mt-8">
+                <!-- Display fetched info here -->
+            </div>
+        </div>
+
+        <!-- Login Tab -->
+        <div id="login-tab" class="tab-content">
+            <div>
+                <a href="google/" class="login-btn">
+                    <img id="google" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/2048px-Google_%22G%22_Logo.svg.png" alt="Google" style="width:50px;height:50px;">
+                    <div class="btn-text">
+                        Login with Google
+                    </div>
+                </a>
+            </div>
         </div>
     </div>
 
     <script>
+        // Function to switch tabs
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].classList.remove("active");
+            }
+            document.getElementById(tabName).classList.add("active");
+        }
+
         // Function to fetch and populate dropdowns
         async function populateDropdowns() {
             // Fetch insurance providers
@@ -38,7 +101,7 @@
                 option.textContent = provider.name;
                 providersSelect.appendChild(option);
             });
-    
+
             // Fetch medicines
             const medicinesResponse = await fetch('/medicines');
             const medicinesData = await medicinesResponse.json();
@@ -50,35 +113,37 @@
                 medicinesSelect.appendChild(option);
             });
         }
-    
+
         document.getElementById("medicineForm").addEventListener("submit", async function(event) {
             event.preventDefault();
             const insuranceProviderId = document.getElementById("insuranceProvider").value;
             const medicineId = document.getElementById("medicine").value;
-    
+
             const response = await fetch('/medicine-info', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ insurance_provider_id: insuranceProviderId, medicine_id: medicineId })
+                body: JSON.stringify({
+                    insurance_provider_id: insuranceProviderId,
+                    medicine_id: medicineId
+                })
             });
-    
+
             const data = await response.json();
-    
+
             const coverageStatus = data.coverage.covered ? 'Covered' : 'Not Covered';
             const coveragePrice = data.coverage.price ? ` - $${data.coverage.price}` : ' - Price information unavailable';
-    
+
             const resultDiv = document.getElementById("result");
             resultDiv.innerHTML = `<p><strong>Medicine Name:</strong> ${data.medicine_name}</p>
                                     <p><strong>Insurance Provider:</strong> ${data.insurance_provider}</p>
-                                    <p><strong>Coverage:</strong> ${coverageStatus}${coveragePrice}</p>`;
+                                    <p><strong>Coverage:</strong> ${coverageStatus}${coveragePrice}`;
         });
-    
+
         // Populate dropdowns on page load
         populateDropdowns();
-    </script>    
+    </script>
 </body>
+
 </html>
-
-

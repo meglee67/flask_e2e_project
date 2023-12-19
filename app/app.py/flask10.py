@@ -13,6 +13,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
 from forflaskref import Medicine, InsuranceProvider, Coverage
 
+
 sentry_sdk.init(
     dsn="https://c402dd2e87b4232687da099038d06895@o4506420135723008.ingest.sentry.io/4506420136837120",
     # Set traces_sample_rate to 1.0 to capture 100%
@@ -25,6 +26,9 @@ sentry_sdk.init(
 )
 
 app = Flask(__name__)
+
+# Set the secret key
+app.secret_key = os.getenv('FLASK_SECRET_KEY')
 
 load_dotenv()
 
@@ -71,14 +75,15 @@ class Coverage(db.Model):
 
 
 @app.route('/')
-def main_index():
+def index():
     return render_template('index.html')
 
 # beginning of OAuth stuff
 
-@app.route('/oauthindex')
-def oauth_index():
-    return render_template('oauthindex.html')
+load_dotenv()
+
+GOOGLE_CLIENT_ID = os.getenv('GOOGLE_CLIENT_ID')
+GOOGLE_CLIENT_SECRET = os.getenv('GOOGLE_CLIENT_SECRET')
 
 @app.route('/google/')
 def google():
@@ -111,13 +116,13 @@ def google_auth():
     session['user'] = user
     update_or_create_user(user)
     print(" Google User ", user)
-    return redirect('/oauthloginpage')
+    return redirect('/dashboard')
 
-@app.route('/oauthloginpage/')
+@app.route('/dashboard/')
 def dashboard():
     user = session.get('user')
     if user:
-        return render_template('oauthloginpage.html', user=user)
+        return render_template('dashboard.html', user=user)
     else:
         return redirect('/')
 
