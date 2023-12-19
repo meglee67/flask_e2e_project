@@ -6,6 +6,19 @@ from sqlalchemy import create_engine, Column, Integer, String, Float, Boolean, F
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
 from forflaskref import Medicine, InsuranceProvider, Coverage
+import sentry_sdk
+from flask import Flask
+
+sentry_sdk.init(
+    dsn="https://c402dd2e87b4232687da099038d06895@o4506420135723008.ingest.sentry.io/4506420136837120",
+    # Set traces_sample_rate to 1.0 to capture 100%
+    # of transactions for performance monitoring.
+    traces_sample_rate=1.0,
+    # Set profiles_sample_rate to 1.0 to profile 100%
+    # of sampled transactions.
+    # We recommend adjusting this value in production.
+    profiles_sample_rate=1.0,
+)
 
 app = Flask(__name__)
 

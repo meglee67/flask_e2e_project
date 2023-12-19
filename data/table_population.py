@@ -2,10 +2,10 @@ from sqlalchemy import create_engine, func
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import relationship
 from faker import Faker
-from gcp import Patient, InsuranceInfo
 import os
 import random 
 from dotenv import load_dotenv
+from table_creation import Medicine, InsuranceProvider, Coverage
 
 load_dotenv()
 
@@ -21,6 +21,7 @@ DB_CHARSET = os.getenv("DB_CHARSET", "utf8mb4")
 connect_args={'ssl':{'fake_flag_to_enable_tls': True}}
 connection_string = (f'mysql+pymysql://{DB_USERNAME}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_DATABASE}'
                     f"?charset={DB_CHARSET}")
+
 engine = create_engine(
         connection_string,
         connect_args=connect_args)
