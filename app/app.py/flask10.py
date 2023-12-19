@@ -1,14 +1,17 @@
-# this is the flask app file that successfully launches locally without issues; no google oauth yet
-from flask import Flask, render_template, request, jsonify
+# this is the flask app that attempts to integrate Google OAuth
+
+from flask import Flask, render_template, url_for, redirect, session, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
-import os
+from authlib.integrations.flask_client import OAuth
+from authlib.common.security import generate_token
 from dotenv import load_dotenv
+from db_functions import update_or_create_user
+import os
+import sentry_sdk
 from sqlalchemy import create_engine, Column, Integer, String, Float, Boolean, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
 from forflaskref import Medicine, InsuranceProvider, Coverage
-import sentry_sdk
-from flask import Flask
 
 sentry_sdk.init(
     dsn="https://c402dd2e87b4232687da099038d06895@o4506420135723008.ingest.sentry.io/4506420136837120",
@@ -24,6 +27,9 @@ sentry_sdk.init(
 app = Flask(__name__)
 
 load_dotenv()
+
+# OAuth initialization
+oauth = OAuth(app)
 
 DB_HOST = os.getenv("DB_HOST")
 DB_DATABASE = os.getenv("DB_DATABASE")
@@ -65,9 +71,62 @@ class Coverage(db.Model):
 
 
 @app.route('/')
-def index():
+def main_index():
     return render_template('index.html')
 
+# beginning of OAuth stuff
+
+@app.route('/oauthindex')
+def oauth_index():
+    return render_template('oauthindex.html')
+
+@app.route('/google/')
+def google():
+    CONF_URL = 'https://accounts.google.com/.well-known/openid-configuration'
+    oauth.register(
+        name='google',
+        client_id=GOOGLE_CLIENT_ID,
+        client_secret=GOOGLE_CLIENT_SECRET,
+        server_metadata_url=CONF_URL,
+        client_kwargs={
+            'scope': 'openid email profile'
+        }
+    )
+
+    # Redirect to google_auth function
+    ###note, if running locally on a non-google shell, do not need to override redirect_uri
+    ### and can just use url_for as below
+    redirect_uri = url_for('google_auth', _external=True)
+    print('REDIRECT URL: ', redirect_uri)
+    session['nonce'] = generate_token()
+    ##, note: if running in google shell, need to override redirect_uri 
+    ## to the external web address of the shell, e.g.,
+    # redirect_uri = 'https://5000-cs-213132341638-default.cs-us-east1-pkhd.cloudshell.dev/google/auth/'
+    return oauth.google.authorize_redirect(redirect_uri, nonce=session['nonce'])
+
+@app.route('/google/auth/')
+def google_auth():
+    token = oauth.google.authorize_access_token()
+    user = oauth.google.parse_id_token(token, nonce=session['nonce'])
+    session['user'] = user
+    update_or_create_user(user)
+    print(" Google User ", user)
+    return redirect('/oauthloginpage')
+
+@app.route('/oauthloginpage/')
+def dashboard():
+    user = session.get('user')
+    if user:
+        return render_template('oauthloginpage.html', user=user)
+    else:
+        return redirect('/')
+
+@app.route('/logout')
+def logout():
+    session.pop('user', None)
+    return redirect('/')
+
+# end of OAuth stuff
 
 @app.route('/medicines', methods=['GET'])
 def get_medicines():
